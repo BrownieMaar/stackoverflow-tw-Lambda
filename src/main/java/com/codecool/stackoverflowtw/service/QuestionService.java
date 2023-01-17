@@ -20,14 +20,13 @@ public class QuestionService {
     }
 
     public List<QuestionDTO> getAllQuestions() {
-        // TODO
-        return List.of(new QuestionDTO(1, "example title", "example desc", LocalDateTime.now()));
+        return questionsDAO.getAllQuestions();
     }
 
     public QuestionDTO getQuestionById(int id) {
         // TODO
         questionsDAO.sayHi();
-        return new QuestionDTO(id, "example title", "example desc", LocalDateTime.now());
+        return new QuestionDTO(id, "example title", "example desc", LocalDateTime.now(), 1);
     }
 
     public boolean deleteQuestionById(int id) {
