@@ -2,6 +2,7 @@ package com.codecool.stackoverflowtw.service;
 
 import com.codecool.stackoverflowtw.controller.dto.QuestionCardDTO;
 import com.codecool.stackoverflowtw.controller.dto.QuestionPageDTO;
+import com.codecool.stackoverflowtw.dao.AnswersDAO;
 import com.codecool.stackoverflowtw.dao.QuestionsDAO;
 import com.codecool.stackoverflowtw.controller.dto.NewQuestionDTO;
 import com.codecool.stackoverflowtw.dao.UsersDAO;
@@ -14,11 +15,13 @@ public class QuestionService {
 
     private QuestionsDAO questionsDAO;
     private UsersDAO usersDAO;
+    private AnswersDAO answersDAO;
 
     @Autowired
-    public QuestionService(QuestionsDAO questionsDAO, UsersDAO usersDAO) {
+    public QuestionService(QuestionsDAO questionsDAO, UsersDAO usersDAO, AnswersDAO answersDAO) {
         this.questionsDAO = questionsDAO;
         this.usersDAO = usersDAO;
+        this.answersDAO = answersDAO;
     }
 
     public List<QuestionCardDTO> getAllQuestions() {
