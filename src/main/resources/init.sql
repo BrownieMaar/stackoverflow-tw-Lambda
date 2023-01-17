@@ -11,9 +11,11 @@ CREATE TABLE users
 
 CREATE TABLE questions
 (
-    id       SERIAL PRIMARY KEY,
-    question VARCHAR(255),
-    user_id  INT,
+    id          SERIAL PRIMARY KEY,
+    title       VARCHAR(80),
+    description VARCHAR(255),
+    created     TIMESTAMP WITHOUT TIME ZONE,
+    user_id     INT,
     FOREIGN KEY (user_id)
         REFERENCES users (id)
 );
@@ -30,15 +32,24 @@ CREATE TABLE answers
         REFERENCES users (id)
 );
 
-INSERT INTO users (name, password) VALUES ('Siyar', 'tevedurumteve');
-INSERT INTO users (name, password) VALUES ('Zoli', 'taborialpha');
-INSERT INTO users (name, password) VALUES ('Dénes', 'questionman');
-INSERT INTO users (name, password) VALUES ('Marci', '1_10_11_100');
+INSERT INTO users (name, password)
+VALUES ('Siyar', 'tevedurumteve');
+INSERT INTO users (name, password)
+VALUES ('Zoli', 'taborialpha');
+INSERT INTO users (name, password)
+VALUES ('Dénes', 'questionman');
+INSERT INTO users (name, password)
+VALUES ('Marci', '1_10_11_100');
 
 
-INSERT INTO questions (question, user_id) VALUES ('Are camels polyamouros?', 1);
-INSERT INTO questions (question, user_id) VALUES ('Wath is the best OOP? With Regards, D.', 3);
+INSERT INTO questions (title, description, created, user_id)
+VALUES ('Are camels polyamouros?', 'Hi guys, I recently fell in love with a camel and i was wondering if it was possible for him to return my love and affection.', localtimestamp, 1);
+INSERT INTO questions (title, description, created, user_id)
+VALUES ('Wath is the best OOP? With Regards, D.', 'Description.', localtimestamp, 3);
 
-INSERT INTO answers (answer, question_id, user_id) VALUES ('No.', 1, 2);
-INSERT INTO answers (answer, question_id, user_id) VALUES ('I have made out with a camel already, but I might have dreamed that.', 1, 4);
-INSERT INTO answers (answer, question_id, user_id) VALUES ('Check out this juicy video about it!', 2, 3);
+INSERT INTO answers (answer, question_id, user_id)
+VALUES ('No.', 1, 2);
+INSERT INTO answers (answer, question_id, user_id)
+VALUES ('I have made out with a camel already, but I might have dreamed that.', 1, 4);
+INSERT INTO answers (answer, question_id, user_id)
+VALUES ('Check out this juicy video about it!', 2, 3);
