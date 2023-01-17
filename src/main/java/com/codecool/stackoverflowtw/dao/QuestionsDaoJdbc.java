@@ -1,7 +1,7 @@
 package com.codecool.stackoverflowtw.dao;
 
-import com.codecool.stackoverflowtw.controller.dto.QuestionDTO;
 import com.codecool.stackoverflowtw.dao.model.Database;
+import com.codecool.stackoverflowtw.dao.model.Question;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,14 +23,14 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
     }
 
     @Override
-    public List<QuestionDTO> getAllQuestions() {
+    public List<Question> getAllQuestions() {
         String template = "SELECT * FROM questions";
-        List<QuestionDTO> questions = new ArrayList<>();
+        List<Question> questions = new ArrayList<>();
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                questions.add(new QuestionDTO(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getInt(5) ));
+                questions.add(new Question(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getInt(5) ));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
