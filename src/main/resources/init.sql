@@ -6,7 +6,8 @@ CREATE TABLE users
 (
     id       SERIAL PRIMARY KEY,
     name     VARCHAR(255) UNIQUE,
-    password VARCHAR(80)
+    password VARCHAR(80),
+    registration TIMESTAMP WITHOUT TIME ZONE
 );
 
 CREATE TABLE questions
@@ -33,16 +34,16 @@ CREATE TABLE answers
         REFERENCES users (id)
 );
 
-INSERT INTO users (name, password)
-VALUES ('Siyar', 'tevedurumteve');
-INSERT INTO users (name, password)
-VALUES ('Zoli', 'taborialpha');
-INSERT INTO users (name, password)
-VALUES ('Dénes', 'questionman');
-INSERT INTO users (name, password)
-VALUES ('Marci', '1_10_11_100');
-INSERT INTO users (name, password)
-VALUES ('Réka', 'bubumaci');
+INSERT INTO users (name, password, registration)
+VALUES ('Siyar', 'tevedurumteve', localtimestamp(2));
+INSERT INTO users (name, password, registration)
+VALUES ('Zoli', 'taborialpha', localtimestamp(2));
+INSERT INTO users (name, password, registration)
+VALUES ('Dénes', 'questionman', localtimestamp(2));
+INSERT INTO users (name, password, registration)
+VALUES ('Marci', '1_10_11_100', localtimestamp(2));
+INSERT INTO users (name, password, registration)
+VALUES ('Réka', 'bubumaci', localtimestamp(2));
 
 
 INSERT INTO questions (title, description, created, user_id)
