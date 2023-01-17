@@ -17,7 +17,7 @@ public class UsersDaoJdbc implements UsersDAO {
 
     @Override
     public User getUserFromUserId(int id) {
-        String template = "SELECT id, name FROM users WHERE id = ?";
+        String template = "SELECT id, name, registration FROM users WHERE id = ?";
 
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {

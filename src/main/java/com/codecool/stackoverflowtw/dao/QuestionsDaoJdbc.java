@@ -44,8 +44,9 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
         Question question = null;
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
-            ResultSet resultSet = statement.executeQuery(template);
             statement.setInt(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 question = new Question(resultSet.getInt("id"), resultSet.getString("title"),
                         resultSet.getString("description"), resultSet.getTimestamp("created").toLocalDateTime(),
