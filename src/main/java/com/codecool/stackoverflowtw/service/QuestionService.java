@@ -1,6 +1,7 @@
 package com.codecool.stackoverflowtw.service;
 
 import com.codecool.stackoverflowtw.controller.dto.QuestionCardDTO;
+import com.codecool.stackoverflowtw.controller.dto.QuestionPageDTO;
 import com.codecool.stackoverflowtw.dao.QuestionsDAO;
 import com.codecool.stackoverflowtw.controller.dto.NewQuestionDTO;
 import com.codecool.stackoverflowtw.dao.UsersDAO;
@@ -24,7 +25,7 @@ public class QuestionService {
         return questionsDAO.getAllQuestions().stream().map(q -> new QuestionCardDTO(q.getId(), q.getTitle(), q.getCreated(), usersDAO.getUserFromUserId(q.getUser_id()), 0)).toList();
     }
 
-    public QuestionCardDTO getQuestionById(int id) {
+    public QuestionPageDTO getQuestionById(int id) {
         // TODO
         questionsDAO.sayHi();
         return null;
