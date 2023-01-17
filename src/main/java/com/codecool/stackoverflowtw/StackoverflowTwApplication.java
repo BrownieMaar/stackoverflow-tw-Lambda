@@ -1,9 +1,6 @@
 package com.codecool.stackoverflowtw;
 
-import com.codecool.stackoverflowtw.dao.QuestionsDAO;
-import com.codecool.stackoverflowtw.dao.QuestionsDaoJdbc;
-import com.codecool.stackoverflowtw.dao.UsersDAO;
-import com.codecool.stackoverflowtw.dao.UsersDaoJdbc;
+import com.codecool.stackoverflowtw.dao.*;
 import com.codecool.stackoverflowtw.dao.model.Database;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -30,5 +27,9 @@ public class StackoverflowTwApplication {
     @Bean
     public UsersDAO usersDAO() {
         return new UsersDaoJdbc(database);
+    }
+    @Bean
+    public AnswersDAO answersDAO() {
+        return new AnswersDaoJdbc(database);
     }
 }
