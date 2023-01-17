@@ -8,4 +8,6 @@ public interface QuestionsDAO {
     void sayHi();
 
     List<Question> getAllQuestions();
+
+    Question getQuestionById();
 }

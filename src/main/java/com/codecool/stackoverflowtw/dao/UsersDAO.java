@@ -1,5 +1,7 @@
 package com.codecool.stackoverflowtw.dao;
 
+import com.codecool.stackoverflowtw.types.User;
+
 public interface UsersDAO {
-    String getUsernameFromUserId(int id);
+    User getUserFromUserId(int id);
 }

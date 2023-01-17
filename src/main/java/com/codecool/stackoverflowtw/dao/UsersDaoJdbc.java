@@ -1,6 +1,9 @@
 package com.codecool.stackoverflowtw.dao;
 
 import com.codecool.stackoverflowtw.dao.model.Database;
+import com.codecool.stackoverflowtw.types.User;
+
+import java.time.LocalDateTime;
 
 public class UsersDaoJdbc implements UsersDAO {
     Database database;
@@ -10,8 +13,8 @@ public class UsersDaoJdbc implements UsersDAO {
     }
 
     @Override
-    public String getUsernameFromUserId(int id) {
+    public User getUserFromUserId(int id) {
         // TODO
-        return null;
+        return new User(1, "MiZo", LocalDateTime.now());
     }
 }

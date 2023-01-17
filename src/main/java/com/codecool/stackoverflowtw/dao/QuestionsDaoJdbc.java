@@ -37,4 +37,9 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
         }
         return questions;
     }
+
+    @Override
+    public Question getQuestionById() {
+        return null;
+    }
 }
