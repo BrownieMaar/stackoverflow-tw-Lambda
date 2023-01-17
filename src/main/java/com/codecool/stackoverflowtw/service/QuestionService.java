@@ -5,8 +5,13 @@ import com.codecool.stackoverflowtw.controller.dto.QuestionPageDTO;
 import com.codecool.stackoverflowtw.dao.QuestionsDAO;
 import com.codecool.stackoverflowtw.controller.dto.NewQuestionDTO;
 import com.codecool.stackoverflowtw.dao.UsersDAO;
+import com.codecool.stackoverflowtw.dao.model.Question;
+import com.codecool.stackoverflowtw.types.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,9 +31,9 @@ public class QuestionService {
     }
 
     public QuestionPageDTO getQuestionById(int id) {
-        // TODO
-        questionsDAO.sayHi();
-        return null;
+      Question question = questionsDAO.getQuestionById(id);
+        return new QuestionPageDTO(question.getId(), question.getTitle(), question.getDescription(),
+                question.getCreated(), new User(question.getUser_id(), "Dénes", LocalDateTime.now()), new ArrayList<>());
     }
 
     public boolean deleteQuestionById(int id) {

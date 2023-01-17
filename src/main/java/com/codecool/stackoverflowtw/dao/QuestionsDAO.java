@@ -9,5 +9,5 @@ public interface QuestionsDAO {
 
     List<Question> getAllQuestions();
 
-    Question getQuestionById();
+    Question getQuestionById(int id);
 }
