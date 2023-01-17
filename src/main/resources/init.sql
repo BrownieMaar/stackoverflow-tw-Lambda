@@ -24,6 +24,7 @@ CREATE TABLE answers
 (
     id          SERIAL PRIMARY KEY,
     answer      VARCHAR(255),
+    created     TIMESTAMP WITHOUT TIME ZONE,
     question_id INT,
     user_id     INT,
     FOREIGN KEY (question_id)
@@ -51,11 +52,11 @@ VALUES ('Wath is the best OOP? With Regards, D.', 'Description.', localtimestamp
 INSERT INTO questions (title, description, created, user_id)
 VALUES ('Hogy mondanád ezt? Mi érzi a kapcsolatokat?', 'Csak kérdem.', localtimestamp, 3);
 
-INSERT INTO answers (answer, question_id, user_id)
-VALUES ('No.', 1, 2);
-INSERT INTO answers (answer, question_id, user_id)
-VALUES ('I have made out with a camel already, but I might have dreamed that.', 1, 4);
-INSERT INTO answers (answer, question_id, user_id)
-VALUES ('Check out this juicy video about it!', 2, 3);
-INSERT INTO answers (answer, question_id, user_id)
-VALUES ('...', 3, 5);
+INSERT INTO answers (answer, created, question_id, user_id)
+VALUES ('No.', localtimestamp, 1, 2);
+INSERT INTO answers (answer, created, question_id, user_id)
+VALUES ('I have made out with a camel already, but I might have dreamed that.',localtimestamp, 1, 4);
+INSERT INTO answers (answer, created, question_id, user_id)
+VALUES ('Check out this juicy video about it!', localtimestamp, 2, 3);
+INSERT INTO answers (answer, created, question_id, user_id)
+VALUES ('...', localtimestamp, 3, 5);
