@@ -1,6 +1,6 @@
 package com.codecool.stackoverflowtw.controller.dto;
 
-import com.codecool.stackoverflowtw.types.User;
+import com.codecool.stackoverflowtw.dao.model.User;
 
 import java.time.LocalDateTime;
 

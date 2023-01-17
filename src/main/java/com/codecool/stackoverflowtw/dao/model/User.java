@@ -1,4 +1,4 @@
-package com.codecool.stackoverflowtw.types;
+package com.codecool.stackoverflowtw.dao.model;
 
 import java.time.LocalDateTime;
 
