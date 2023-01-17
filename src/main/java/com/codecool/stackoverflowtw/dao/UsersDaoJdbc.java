@@ -17,10 +17,11 @@ public class UsersDaoJdbc implements UsersDAO {
 
     @Override
     public User getUserFromUserId(int id) {
-        String template = "SELECT id, name FROM users WHERE id = " + id;
+        String template = "SELECT id, name FROM users WHERE id = ?";
 
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
+            statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return new User(id, resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime());
