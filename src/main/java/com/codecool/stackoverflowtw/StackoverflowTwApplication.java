@@ -11,10 +11,12 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class StackoverflowTwApplication {
+    public static final String USERNAME = "USERNAME";
+    public static final String PASSWORD = "PASSWORD";
     Database database = new Database(
             "jdbc:postgresql://localhost:5432/stackoverflow",
-            "marci",
-            "1234");
+            System.getenv(USERNAME),
+            System.getenv(PASSWORD));
 
     public static void main(String[] args) {
         SpringApplication.run(StackoverflowTwApplication.class, args);
