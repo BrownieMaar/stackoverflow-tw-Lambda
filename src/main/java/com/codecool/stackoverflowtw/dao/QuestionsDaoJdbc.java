@@ -1,7 +1,7 @@
 package com.codecool.stackoverflowtw.dao;
 
-import com.codecool.stackoverflowtw.controller.dto.NewQuestionDTO;
 import com.codecool.stackoverflowtw.dao.model.Database;
+import com.codecool.stackoverflowtw.dao.model.NewQuestion;
 import com.codecool.stackoverflowtw.dao.model.Question;
 
 import java.sql.Connection;
@@ -60,7 +60,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
     }
 
     @Override
-    public Integer addNewQuestion(NewQuestionDTO question) {
+    public Integer addNewQuestion(NewQuestion question) {
         int id = 0;
         String template = "INSERT INTO questions (title, description, created, user_id) VALUES (?,?,localTimeStamp(2)" +
                 "," +
@@ -68,9 +68,9 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
                 "RETURNING id";
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
-            statement.setString(1, question.title());
-            statement.setString(2, question.description());
-            statement.setInt(3, question.user_id());
+            statement.setString(1, question.getTitle());
+            statement.setString(2, question.getDescription());
+            statement.setInt(3, question.getUser_id());
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             return resultSet.getInt("id");

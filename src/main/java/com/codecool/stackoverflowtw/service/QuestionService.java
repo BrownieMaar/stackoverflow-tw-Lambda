@@ -8,6 +8,7 @@ import com.codecool.stackoverflowtw.dao.AnswersDAO;
 import com.codecool.stackoverflowtw.dao.QuestionsDAO;
 import com.codecool.stackoverflowtw.dao.UsersDAO;
 import com.codecool.stackoverflowtw.dao.model.Answer;
+import com.codecool.stackoverflowtw.dao.model.NewQuestion;
 import com.codecool.stackoverflowtw.dao.model.Question;
 import com.codecool.stackoverflowtw.dao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +50,8 @@ public class QuestionService {
     }
 
     public int addNewQuestion(NewQuestionDTO question) {
-        int createdId = questionsDAO.addNewQuestion(question);;
-        return createdId;
+        return questionsDAO.addNewQuestion(new NewQuestion(question.title(), question.description(),
+                question.user_id()));
     }
 
     private List<AnswerDTO> createAnswerDTOList(List<Answer> answerList) {
