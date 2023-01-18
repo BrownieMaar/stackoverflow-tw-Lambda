@@ -13,8 +13,8 @@ import com.codecool.stackoverflowtw.dao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -49,17 +49,14 @@ public class QuestionService {
     }
 
     public int addNewQuestion(NewQuestionDTO question) {
-        // TODO
-        int createdId = 0;
+        int createdId = questionsDAO.addNewQuestion(question);;
         return createdId;
     }
 
     private List<AnswerDTO> createAnswerDTOList(List<Answer> answerList) {
-        List<AnswerDTO> answerDTOList = new ArrayList<>();
-        for (Answer answer : answerList) {
-            answerDTOList.add(new AnswerDTO(answer.getId(), answer.getAnswer(),
-                    usersDAO.getUserFromUserId(answer.getUser_id()), answer.getCreated()));
-        }
-        return answerDTOList;
+        return answerList.stream().map(answer -> new AnswerDTO(answer.getId(), answer.getAnswer(),
+                        usersDAO.getUserFromUserId(answer.getUser_id()), answer.getCreated()))
+                .collect(Collectors.toList());
+
     }
 }

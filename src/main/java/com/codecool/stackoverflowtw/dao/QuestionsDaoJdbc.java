@@ -1,5 +1,6 @@
 package com.codecool.stackoverflowtw.dao;
 
+import com.codecool.stackoverflowtw.controller.dto.NewQuestionDTO;
 import com.codecool.stackoverflowtw.dao.model.Database;
 import com.codecool.stackoverflowtw.dao.model.Question;
 
@@ -56,5 +57,26 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             throw new RuntimeException(e);
         }
         return question;
+    }
+
+    @Override
+    public Integer addNewQuestion(NewQuestionDTO question) {
+        int id = 0;
+        String template = "INSERT INTO questions (title, description, created, user_id) VALUES (?,?,localTimeStamp(2)" +
+                "," +
+                "?) " +
+                "RETURNING id";
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            statement.setString(1, question.title());
+            statement.setString(2, question.description());
+            statement.setInt(3, question.user_id());
+            ResultSet resultSet = statement.executeQuery();
+            resultSet.next();
+            return resultSet.getInt("id");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

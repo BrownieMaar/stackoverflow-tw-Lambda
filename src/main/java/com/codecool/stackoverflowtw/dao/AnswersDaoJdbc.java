@@ -48,7 +48,6 @@ public class AnswersDaoJdbc implements AnswersDAO {
                         resultSet.getTimestamp("created").toLocalDateTime(),
                         resultSet.getInt("question_id"),
                         resultSet.getInt("user_id")
-
                 ));
             }
         } catch (SQLException e) {
