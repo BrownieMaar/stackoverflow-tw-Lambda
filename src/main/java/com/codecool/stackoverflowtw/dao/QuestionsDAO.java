@@ -10,4 +10,6 @@ public interface QuestionsDAO {
     List<Question> getAllQuestions();
 
     Question getQuestionById(int id);
+
+    Boolean deleteQuestionById(int id);
 }

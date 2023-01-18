@@ -57,4 +57,29 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
         }
         return question;
     }
+
+    @Override
+    public Boolean deleteQuestionById(int id) {
+        //Delete related answers:
+        String deleteAnswersTemplate = "DELETE FROM answers WHERE question_id = ?";
+        try (Connection connection = database.getConnection();
+                PreparedStatement statement = connection.prepareStatement(deleteAnswersTemplate)) {
+                statement.setInt(1, id);
+                statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+        //Delete the question:
+        String deleteQuestionsTemplate =" DELETE FROM questions WHERE id = ?;";
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(deleteQuestionsTemplate)) {
+             statement.setInt(1, id);
+             statement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            return false;
+        }
+        return true;
+    }
 }
