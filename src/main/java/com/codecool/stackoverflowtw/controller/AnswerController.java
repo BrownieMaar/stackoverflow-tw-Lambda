@@ -22,7 +22,7 @@ public class AnswerController {
 
     @DeleteMapping("/{id}")
     public boolean deleteAnswer(@PathVariable int id) {
-        return false;
+        return answerService.deleteAnswerById(id);
     }
 
 }
