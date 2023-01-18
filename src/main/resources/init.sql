@@ -52,6 +52,10 @@ INSERT INTO questions (title, description, created, user_id)
 VALUES ('Wath is the best OOP? With Regards, D.', 'Description.', localtimestamp, 3);
 INSERT INTO questions (title, description, created, user_id)
 VALUES ('Hogy mondanád ezt? Mi érzi a kapcsolatokat?', 'Csak kérdem.', localtimestamp, 3);
+INSERT INTO questions (title, description, created, user_id)
+VALUES ('Hogyan kell? Tudod törülni a kérdést?', 'Csak kérdem.',
+        localtimestamp,
+        3);
 
 INSERT INTO answers (answer, created, question_id, user_id)
 VALUES ('No.', localtimestamp, 1, 2);
@@ -61,3 +65,5 @@ INSERT INTO answers (answer, created, question_id, user_id)
 VALUES ('Check out this juicy video about it!', localtimestamp, 2, 3);
 INSERT INTO answers (answer, created, question_id, user_id)
 VALUES ('...', localtimestamp, 3, 5);
+INSERT INTO answers (answer, created, question_id, user_id)
+VALUES ('...', localtimestamp, 4, 5);
