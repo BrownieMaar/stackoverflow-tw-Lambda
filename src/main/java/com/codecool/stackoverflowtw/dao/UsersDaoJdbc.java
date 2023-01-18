@@ -30,7 +30,9 @@ public class UsersDaoJdbc implements UsersDAO {
             }
             return users;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Could not get the users.\n");
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
@@ -48,7 +50,9 @@ public class UsersDaoJdbc implements UsersDAO {
                 return null;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("Could not get the user with id: " + id + "\n");
+            System.out.println(e.getMessage());
+            return null;
         }
     }
 
@@ -67,7 +71,9 @@ public class UsersDaoJdbc implements UsersDAO {
                 return 0;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("There was a problem with counting the questions of user: " + userId + "\n");
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 
@@ -86,7 +92,9 @@ public class UsersDaoJdbc implements UsersDAO {
                 return 0;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("There was a problem with counting the answers of user: " + userId + "\n");
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 
@@ -100,14 +108,16 @@ public class UsersDaoJdbc implements UsersDAO {
             statement.setString(1, user.getName());
             statement.setString(2, user.getPassword());
             ResultSet result = statement.executeQuery();
-            if  (result.next()) {
+            if (result.next()) {
                 return result.getInt(1);
             } else {
                 System.out.println("Could not create this user.");
                 return 0;
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("There was a problem creating this user.\n");
+            System.out.println(e.getMessage());
+            return 0;
         }
     }
 
@@ -121,7 +131,9 @@ public class UsersDaoJdbc implements UsersDAO {
             statement.executeUpdate();
             return true;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.out.println("There was a problem deleting this user.\n");
+            System.out.println(e.getMessage());
+            return false;
         }
 
     }
