@@ -32,7 +32,7 @@ public class QuestionService {
     }
 
     public List<QuestionCardDTO> getAllQuestions() {
-        return questionsDAO.getAllQuestions().stream().map(q -> new QuestionCardDTO(q.getId(), q.getTitle(), q.getCreated(), usersDAO.getUserFromUserId(q.getUser_id()), 0)).toList();
+        return questionsDAO.getAllQuestions().stream().map(q -> new QuestionCardDTO(q.getId(), q.getTitle(), q.getCreated(), usersDAO.getUserFromUserId(q.getUser_id()), answersDAO.getAnswerCountByQuestionId(q.getId()))).toList();
     }
 
     public QuestionPageDTO getQuestionById(int id) {
