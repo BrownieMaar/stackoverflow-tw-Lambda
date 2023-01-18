@@ -19,11 +19,6 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
     }
 
     @Override
-    public void sayHi() {
-        System.out.println("Hi DAO!");
-    }
-
-    @Override
     public List<Question> getAllQuestions() {
         String template = "SELECT * FROM questions";
         List<Question> questions = new ArrayList<>();
@@ -79,4 +74,5 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
         }
 
     }
+
 }
