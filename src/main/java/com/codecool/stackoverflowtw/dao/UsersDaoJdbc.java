@@ -57,6 +57,30 @@ public class UsersDaoJdbc implements UsersDAO {
     }
 
     @Override
+    public User getUserByNameAndPassword(NewUser newUser) {
+        String template = "SELECT id, name, registration, password FROM users WHERE name = ?";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            statement.setString(1, newUser.getName());
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                if (resultSet.getString("password").equals(newUser.getPassword())) {
+                    return new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime());
+                }
+                System.out.println("Password does not match.");
+            } else {
+                System.out.println("No user with that id.");
+            }
+            return null;
+        } catch (SQLException e) {
+            System.out.println("Could not get the user with name: " + newUser.getName() + "\n");
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    @Override
     public int countQuestionsByUser(int userId) {
         String template = "SELECT COUNT(id) AS questionCount FROM questions WHERE user_id = ?";
 

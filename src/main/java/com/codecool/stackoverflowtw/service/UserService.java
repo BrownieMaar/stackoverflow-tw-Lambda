@@ -30,6 +30,16 @@ public class UserService {
         return new UserPageDTO(id, user.getName(), user.getRegistrationDate(), questionCount, answerCount);
     }
 
+    public UserPageDTO getUserByNameAndPassword(NewUserDTO newUserDTO) {
+        User user = usersDAO.getUserByNameAndPassword(new NewUser(newUserDTO.name(), newUserDTO.password()));
+        if (user == null) {
+            return null;
+        }
+        int questionCount = usersDAO.countQuestionsByUser(user.getId());
+        int answerCount = usersDAO.countAnswersByUser(user.getId());
+        return new UserPageDTO(user.getId(), user.getName(), user.getRegistrationDate(), questionCount, answerCount);
+    }
+
     public boolean deleteUserById(int id) {
         return usersDAO.deleteUser(id);
     }
