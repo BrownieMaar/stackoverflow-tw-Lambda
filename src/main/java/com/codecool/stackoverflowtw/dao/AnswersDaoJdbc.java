@@ -1,7 +1,10 @@
 package com.codecool.stackoverflowtw.dao;
 
+import com.codecool.stackoverflowtw.controller.dto.NewAnswerDTO;
 import com.codecool.stackoverflowtw.dao.model.Answer;
 import com.codecool.stackoverflowtw.dao.model.Database;
+import com.codecool.stackoverflowtw.dao.model.NewAnswer;
+import com.codecool.stackoverflowtw.dao.model.Question;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -55,5 +58,25 @@ public class AnswersDaoJdbc implements AnswersDAO {
             throw new RuntimeException(e);
         }
         return answers;
+    }
+
+    @Override
+    public boolean createAnswer(NewAnswer newAnswer) {
+        String template = "INSERT INTO answers (answer, created, question_id, user_id) VALUES (?, localtimestamp, ?, ?)";
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            statement.setString(1, newAnswer.getAnswer());
+            statement.setInt(2, newAnswer.getQuestion_id());
+            statement.setInt(3, newAnswer.getUser_id());
+            statement.executeQuery();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
+    }
+
+    @Override
+    public boolean deleteAnswer(int id) {
+        return false;
     }
 }
