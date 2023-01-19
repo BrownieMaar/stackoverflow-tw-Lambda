@@ -18,13 +18,13 @@ public class UsersDaoJdbc implements UsersDAO {
 
     @Override
     public List<User> getAllUsers() {
-        String template = "SELECT id, name, registration FROM users";
+        String template = "SELECT id, name, registration, is_admin FROM users";
         List<User> users = new ArrayList<>();
 
         try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(template)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                users.add(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime()));
+                users.add(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime(), resultSet.getBoolean("is_admin")));
             }
             return users;
         } catch (SQLException e) {
@@ -36,13 +36,13 @@ public class UsersDaoJdbc implements UsersDAO {
 
     @Override
     public User getUserFromUserId(int id) {
-        String template = "SELECT id, name, registration FROM users WHERE id = ?";
+        String template = "SELECT id, name, registration, is_admin FROM users WHERE id = ?";
 
         try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(template)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return new User(id, resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime());
+                return new User(id, resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime(), resultSet.getBoolean("is_admin"));
             } else {
                 System.out.println("No user with that id.");
                 return null;
@@ -64,7 +64,7 @@ public class UsersDaoJdbc implements UsersDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 if (resultSet.getString("password").equals(newUser.getPassword())) {
-                    return new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime());
+                    return new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime(), resultSet.getBoolean("is_admin"));
                 }
                 System.out.println("Password does not match.");
             } else {
