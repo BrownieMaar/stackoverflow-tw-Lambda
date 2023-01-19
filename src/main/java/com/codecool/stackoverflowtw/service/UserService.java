@@ -61,6 +61,6 @@ public class UserService {
     }
 
     public List<AnswerDTO> getAnswersByUser(int id) {
-        return usersDAO.getAnswersByUser(id).stream().map(a -> new AnswerDTO(a.getId(), a.getAnswer(), usersDAO.getUserFromUserId(id), a.getCreated())).toList();
+        return usersDAO.getAnswersByUser(id).stream().map(a -> new AnswerDTO(a.getId(), a.getAnswer(), usersDAO.getUserFromUserId(id), a.getCreated(), a.getQuestion_id())).toList();
     }
 }
