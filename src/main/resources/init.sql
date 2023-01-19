@@ -4,10 +4,11 @@ DROP TABLE IF EXISTS users CASCADE;
 
 CREATE TABLE users
 (
-    id       SERIAL PRIMARY KEY,
-    name     VARCHAR(255) UNIQUE,
-    password VARCHAR(80),
-    registration TIMESTAMP WITHOUT TIME ZONE
+    id           SERIAL PRIMARY KEY,
+    name         VARCHAR(255) UNIQUE,
+    password     VARCHAR(80),
+    registration TIMESTAMP WITHOUT TIME ZONE,
+    is_admin     BOOLEAN DEFAULT false
 );
 
 CREATE TABLE questions
@@ -40,14 +41,16 @@ INSERT INTO users (name, password, registration)
 VALUES ('Zoli', 'taborialpha', localtimestamp(2));
 INSERT INTO users (name, password, registration)
 VALUES ('Dénes', 'questionman', localtimestamp(2));
-INSERT INTO users (name, password, registration)
-VALUES ('Marci', '1_10_11_100', localtimestamp(2));
+INSERT INTO users (name, password, registration, is_admin)
+VALUES ('Marci', '1_10_11_100', localtimestamp(2), true);
 INSERT INTO users (name, password, registration)
 VALUES ('Réka', 'bubumaci', localtimestamp(2));
 
 
 INSERT INTO questions (title, description, created, user_id)
-VALUES ('Are camels polyamouros?', 'Hi guys, I recently fell in love with a camel and i was wondering if it was possible for him to return my love and affection.', localtimestamp, 1);
+VALUES ('Are camels polyamouros?',
+        'Hi guys, I recently fell in love with a camel and i was wondering if it was possible for him to return my love and affection.',
+        localtimestamp, 1);
 INSERT INTO questions (title, description, created, user_id)
 VALUES ('Wath is the best OOP? With Regards, D.', 'Description.', localtimestamp, 3);
 INSERT INTO questions (title, description, created, user_id)
@@ -60,7 +63,7 @@ VALUES ('Hogyan kell? Tudod törülni a kérdést?', 'Csak kérdem.',
 INSERT INTO answers (answer, created, question_id, user_id)
 VALUES ('No.', localtimestamp, 1, 2);
 INSERT INTO answers (answer, created, question_id, user_id)
-VALUES ('I have made out with a camel already, but I might have dreamed that.',localtimestamp, 1, 4);
+VALUES ('I have made out with a camel already, but I might have dreamed that.', localtimestamp, 1, 4);
 INSERT INTO answers (answer, created, question_id, user_id)
 VALUES ('Check out this juicy video about it!', localtimestamp, 2, 3);
 INSERT INTO answers (answer, created, question_id, user_id)
