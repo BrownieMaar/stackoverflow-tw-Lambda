@@ -56,7 +56,7 @@ public class UsersDaoJdbc implements UsersDAO {
 
     @Override
     public User getUserByNameAndPassword(NewUser newUser) {
-        String template = "SELECT id, name, registration, password FROM users WHERE name = ?";
+        String template = "SELECT id, name, registration, password, is_admin FROM users WHERE name = ?";
 
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
