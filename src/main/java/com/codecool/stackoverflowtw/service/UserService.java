@@ -57,10 +57,13 @@ public class UserService {
     }
 
     public List<QuestionCardDTO> getQuestionsByUser(int id) {
-        return usersDAO.getQuestionsByUser(id).stream().map(q -> new QuestionCardDTO(q.getId(), q.getTitle(), q.getCreated(), usersDAO.getUserFromUserId(q.getUser_id()), answersDAO.getAnswerCountByQuestionId(q.getId()))).toList();
+        return usersDAO.getQuestionsByUser(id).stream().map(q -> new QuestionCardDTO(q.getId(), q.getTitle(),
+                q.getCreated(), usersDAO.getUserFromUserId(q.getUser_id()),
+                answersDAO.getAnswerCountByQuestionId(q.getId()), q.getUpVoteCount(), q.getDownVoteCount())).toList();
     }
 
     public List<AnswerDTO> getAnswersByUser(int id) {
-        return usersDAO.getAnswersByUser(id).stream().map(a -> new AnswerDTO(a.getId(), a.getAnswer(), usersDAO.getUserFromUserId(id), a.getCreated(), a.getQuestion_id())).toList();
+        return usersDAO.getAnswersByUser(id).stream().map(a -> new AnswerDTO(a.getId(), a.getAnswer(),
+                usersDAO.getUserFromUserId(id), a.getCreated(), a.getQuestion_id(), a.getUpVoteCount(), a.getDownVoteCount())).toList();
     }
 }

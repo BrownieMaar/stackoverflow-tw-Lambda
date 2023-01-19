@@ -175,7 +175,10 @@ public class UsersDaoJdbc implements UsersDAO {
                                 resultSet.getString(2),
                                 resultSet.getTimestamp(3).toLocalDateTime(),
                                 resultSet.getInt(4),
-                                userId));
+                                userId,
+                                resultSet.getInt(6),
+                                resultSet.getInt(7)
+                        ));
             }
             return userAnswers;
         } catch (SQLException e) {
@@ -200,7 +203,9 @@ public class UsersDaoJdbc implements UsersDAO {
                                 resultSet.getString(2),
                                 resultSet.getString(3),
                                 resultSet.getTimestamp(4).toLocalDateTime(),
-                                userId
+                                userId,
+                                resultSet.getInt(6),
+                                resultSet.getInt(7)
                         )
                 );
             }
