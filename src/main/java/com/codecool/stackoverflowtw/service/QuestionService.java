@@ -55,7 +55,7 @@ public class QuestionService {
 
     private List<AnswerDTO> createAnswerDTOList(List<Answer> answerList) {
         return answerList.stream().map(answer -> new AnswerDTO(answer.getId(), answer.getAnswer(),
-                        usersDAO.getUserFromUserId(answer.getUser_id()), answer.getCreated()))
+                        usersDAO.getUserFromUserId(answer.getUser_id()), answer.getCreated(), answer.getQuestion_id()))
                 .collect(Collectors.toList());
 
     }
