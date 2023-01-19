@@ -8,13 +8,25 @@ public class Answer {
     LocalDateTime created;
     int question_id;
     int user_id;
+    int upVoteCount;
+    int downVoteCount;
 
-    public Answer(int id, String answer, LocalDateTime created, int question_id, int user_id) {
+    public Answer(int id, String answer, LocalDateTime created, int question_id, int user_id, int upVoteCount, int downVoteCount) {
         this.id = id;
         this.answer = answer;
         this.created = created;
         this.question_id = question_id;
         this.user_id = user_id;
+        this.upVoteCount = upVoteCount;
+        this.downVoteCount = downVoteCount;
+    }
+
+    public int getUpVoteCount() {
+        return upVoteCount;
+    }
+
+    public int getDownVoteCount() {
+        return downVoteCount;
     }
 
     public int getId() {

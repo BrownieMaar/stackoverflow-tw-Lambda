@@ -1,6 +1,7 @@
 package com.codecool.stackoverflowtw.dao;
 
 import com.codecool.stackoverflowtw.dao.model.Answer;
+import com.codecool.stackoverflowtw.dao.model.AnswerVote;
 import com.codecool.stackoverflowtw.dao.model.Database;
 import com.codecool.stackoverflowtw.dao.model.NewAnswer;
 
@@ -48,7 +49,10 @@ public class AnswersDaoJdbc implements AnswersDAO {
                         resultSet.getString("answer"),
                         resultSet.getTimestamp("created").toLocalDateTime(),
                         resultSet.getInt("question_id"),
-                        resultSet.getInt("user_id")
+                        resultSet.getInt("user_id"),
+                        getUpvoteCount(resultSet.getInt(1)),
+                        getDownVoteCount(resultSet.getInt(1))
+
                 ));
             }
         } catch (SQLException e) {
@@ -69,7 +73,9 @@ public class AnswersDaoJdbc implements AnswersDAO {
                         resultSet.getString("answer"),
                         resultSet.getTimestamp("created").toLocalDateTime(),
                         resultSet.getInt("question_id"),
-                        resultSet.getInt("user_id")
+                        resultSet.getInt("user_id"),
+                        getUpvoteCount(id),
+                        getDownVoteCount(id)
                 );
             }
         } catch (SQLException e) {
@@ -110,5 +116,65 @@ public class AnswersDaoJdbc implements AnswersDAO {
             System.out.println(e.getSQLState());
             return false;
         }
+    }
+
+    @Override
+    public boolean vote(AnswerVote answerVote) {
+
+        String template = "INSERT INTO answervotes (answer_id, user_id, answervote)\n" +
+                "VALUES (?, ?, ?)\n" +
+                "ON CONFLICT (answer_id, user_id) DO UPDATE SET answervote = EXCLUDED.answervote;";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+
+            statement.setInt(1, answerVote.getAnswer_id());
+            statement.setInt(2, answerVote.getUser_id());
+            statement.setBoolean(3, answerVote.isVote());
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private int getUpvoteCount(int id) {
+        String template =
+                "SELECT answer_id," +
+                        " COUNT(CASE WHEN answervote = true THEN 1 END) as upvotes " +
+                        " FROM answervotes GROUP BY answer_id;";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == id) {
+                    return resultSet.getInt("upvotes");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
+    private int getDownVoteCount(int id) {
+        String template =
+                "SELECT answer_id," +
+                        " COUNT(CASE WHEN answervote = false THEN 1 END) as downvotes " +
+                        " FROM answervotes GROUP BY answer_id;";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == id) {
+                    return resultSet.getInt("downvotes");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
     }
 }

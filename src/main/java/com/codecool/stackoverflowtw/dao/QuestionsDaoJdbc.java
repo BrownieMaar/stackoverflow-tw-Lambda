@@ -3,6 +3,7 @@ package com.codecool.stackoverflowtw.dao;
 import com.codecool.stackoverflowtw.dao.model.Database;
 import com.codecool.stackoverflowtw.dao.model.NewQuestion;
 import com.codecool.stackoverflowtw.dao.model.Question;
+import com.codecool.stackoverflowtw.dao.model.QuestionVote;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -31,7 +32,10 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
              PreparedStatement statement = connection.prepareStatement(template)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                questions.add(new Question(resultSet.getInt(1), resultSet.getString(2), resultSet.getString(3), resultSet.getTimestamp(4).toLocalDateTime(), resultSet.getInt(5)));
+                questions.add(new Question(resultSet.getInt(1),
+                        resultSet.getString(2), resultSet.getString(3), resultSet.getTimestamp(4).toLocalDateTime(),
+                        resultSet.getInt(5), getUpvoteCount(resultSet.getInt(1)
+                ), getDownVoteCount(resultSet.getInt(1))));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -51,7 +55,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             while (resultSet.next()) {
                 question = new Question(resultSet.getInt("id"), resultSet.getString("title"),
                         resultSet.getString("description"), resultSet.getTimestamp("created").toLocalDateTime(),
-                        resultSet.getInt("user_id"));
+                        resultSet.getInt("user_id"), getUpvoteCount(id), getDownVoteCount(id));
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -61,7 +65,6 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
 
     @Override
     public Integer addNewQuestion(NewQuestion question) {
-        int id = 0;
         String template = "INSERT INTO questions (title, description, created, user_id) VALUES (?,?,localTimeStamp(2)" +
                 "," +
                 "?) " +
@@ -80,29 +83,90 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
 
     }
 
+    @Override
+    public boolean vote(QuestionVote questionVote) {
+        String template = "INSERT INTO questionvotes (question_id, user_id, questionvote)\n" +
+                "VALUES (?, ?, ?)\n" +
+                "ON CONFLICT (question_id, user_id) DO UPDATE SET questionvote = EXCLUDED.questionvote;";
+
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+
+            statement.setInt(1, questionVote.getUser_id());
+            statement.setInt(2, questionVote.getQuestion_id());
+            statement.setBoolean(3, questionVote.isVote());
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
     @Override
     public Boolean deleteQuestionById(int id) {
         //Delete related answers:
         String deleteAnswersTemplate = "DELETE FROM answers WHERE question_id = ?";
         try (Connection connection = database.getConnection();
-                PreparedStatement statement = connection.prepareStatement(deleteAnswersTemplate)) {
-                statement.setInt(1, id);
-                statement.executeUpdate();
+             PreparedStatement statement = connection.prepareStatement(deleteAnswersTemplate)) {
+            statement.setInt(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
             return false;
         }
         //Delete the question:
-        String deleteQuestionsTemplate =" DELETE FROM questions WHERE id = ?;";
+        String deleteQuestionsTemplate = " DELETE FROM questions WHERE id = ?;";
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(deleteQuestionsTemplate)) {
-             statement.setInt(1, id);
-             statement.executeUpdate();
+            statement.setInt(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);
             return false;
         }
         return true;
     }
+
+    private int getUpvoteCount(int id) {
+        String template =
+                "SELECT question_id," +
+                        " COUNT(CASE WHEN questionvote = true THEN 1 END) as upvotes " +
+                        " FROM questionvotes GROUP BY question_id;";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == id) {
+                    return resultSet.getInt("upvotes");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
+    private int getDownVoteCount(int id) {
+        String template =
+                "SELECT question_id," +
+                        " COUNT(CASE WHEN questionvote = false THEN 1 END) as downvotes " +
+                        " FROM questionvotes GROUP BY question_id;";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == id) {
+                    return resultSet.getInt("downvotes");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
 }

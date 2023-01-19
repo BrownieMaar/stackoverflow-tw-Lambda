@@ -1,11 +1,14 @@
 package com.codecool.stackoverflowtw.service;
 
 import com.codecool.stackoverflowtw.controller.dto.AnswerDTO;
+import com.codecool.stackoverflowtw.controller.dto.AnswerVoteDTO;
 import com.codecool.stackoverflowtw.controller.dto.NewAnswerDTO;
 import com.codecool.stackoverflowtw.dao.AnswersDAO;
 import com.codecool.stackoverflowtw.dao.UsersDAO;
 import com.codecool.stackoverflowtw.dao.model.Answer;
+import com.codecool.stackoverflowtw.dao.model.AnswerVote;
 import com.codecool.stackoverflowtw.dao.model.NewAnswer;
+import com.codecool.stackoverflowtw.dao.model.QuestionVote;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +29,14 @@ public class AnswerService {
 
     public AnswerDTO addNewAnswer(NewAnswerDTO newAnswerDTO) {
         Answer answer = answersDAO.createAnswer(new NewAnswer(newAnswerDTO.answer(), newAnswerDTO.question_id(), newAnswerDTO.user_id()));
-        return new AnswerDTO(answer.getId(), answer.getAnswer(), usersDAO.getUserFromUserId(answer.getUser_id()), answer.getCreated());
+        return new AnswerDTO(answer.getId(), answer.getAnswer(), usersDAO.getUserFromUserId(answer.getUser_id()),
+                answer.getCreated(), answer.getUpVoteCount(), answer.getDownVoteCount());
+    }
+
+    public boolean voteToAnswer(AnswerVoteDTO answerVoteDTO){
+
+        return answersDAO.vote(new AnswerVote(answerVoteDTO.vote() ,answerVoteDTO.answerId(),
+                answerVoteDTO.userId()));
     }
 
 }

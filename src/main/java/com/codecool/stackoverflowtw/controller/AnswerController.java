@@ -1,6 +1,7 @@
 package com.codecool.stackoverflowtw.controller;
 
 import com.codecool.stackoverflowtw.controller.dto.AnswerDTO;
+import com.codecool.stackoverflowtw.controller.dto.AnswerVoteDTO;
 import com.codecool.stackoverflowtw.controller.dto.NewAnswerDTO;
 import com.codecool.stackoverflowtw.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,4 +27,10 @@ public class AnswerController {
         return answerService.deleteAnswerById(id);
     }
 
+    @PutMapping
+    private boolean voteToAnswer(@RequestBody AnswerVoteDTO answerVoteDTO) {
+        return answerService.voteToAnswer(answerVoteDTO);
+    }
+
+    ;
 }

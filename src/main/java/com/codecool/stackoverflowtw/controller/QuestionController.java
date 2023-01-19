@@ -3,6 +3,7 @@ package com.codecool.stackoverflowtw.controller;
 import com.codecool.stackoverflowtw.controller.dto.NewQuestionDTO;
 import com.codecool.stackoverflowtw.controller.dto.QuestionCardDTO;
 import com.codecool.stackoverflowtw.controller.dto.QuestionPageDTO;
+import com.codecool.stackoverflowtw.controller.dto.QuestionVoteDTO;
 import com.codecool.stackoverflowtw.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,8 @@ public class QuestionController {
         return questionService.getQuestionById(id);
     }
 
+    @PutMapping("/vote")
+    public boolean voteToQuestion(@RequestBody QuestionVoteDTO questionVoteDTO){return  questionService.voteToQuestion(questionVoteDTO); }
 
     @PostMapping("/")
     public int addNewQuestion(@RequestBody NewQuestionDTO question) {
