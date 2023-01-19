@@ -9,7 +9,7 @@ public interface AnswersDAO {
     int getAnswerCountByQuestionId(int questionId);
     List<Answer> getAnswersByQuestionId(int questionId);
 
-    boolean createAnswer(NewAnswer newAnswer);
+    Answer createAnswer(NewAnswer newAnswer);
     boolean deleteAnswer(int id);
     boolean deleteAnswersByUserId(int user_id);
 }
