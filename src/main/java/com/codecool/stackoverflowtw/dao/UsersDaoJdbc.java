@@ -204,8 +204,8 @@ public class UsersDaoJdbc implements UsersDAO {
                                 resultSet.getString(3),
                                 resultSet.getTimestamp(4).toLocalDateTime(),
                                 userId,
-                                resultSet.getInt(6),
-                                resultSet.getInt(7)
+                                getUpvoteCount(userId),
+                                getDownVoteCount(userId)
                         )
                 );
             }
@@ -216,4 +216,45 @@ public class UsersDaoJdbc implements UsersDAO {
             return null;
         }
     }
+
+    private int getUpvoteCount(int id) {
+        String template =
+                "SELECT question_id," +
+                        " COUNT(CASE WHEN questionvote = true THEN 1 END) as upvotes " +
+                        " FROM questionvotes GROUP BY question_id;";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == id) {
+                    return resultSet.getInt("upvotes");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
+    private int getDownVoteCount(int id) {
+        String template =
+                "SELECT question_id," +
+                        " COUNT(CASE WHEN questionvote = false THEN 1 END) as downvotes " +
+                        " FROM questionvotes GROUP BY question_id;";
+
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                if (resultSet.getInt(1) == id) {
+                    return resultSet.getInt("downvotes");
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return 0;
+    }
+
 }
