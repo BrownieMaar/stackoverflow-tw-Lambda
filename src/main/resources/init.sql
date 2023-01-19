@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS questions CASCADE;
 DROP TABLE IF EXISTS answers CASCADE;
 DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS questionVotes CASCADE;
+DROP TABLE IF EXISTS answerVotes CASCADE;
 
 CREATE TABLE users
 (
@@ -33,6 +35,24 @@ CREATE TABLE answers
         REFERENCES questions (id),
     FOREIGN KEY (user_id)
         REFERENCES users (id)
+);
+CREATE TABLE questionVotes
+(
+    question_id INT NOT NULL ,
+    user_id     INT NOT NULL ,
+    questionVote        boolean NOT NULL ,
+    PRIMARY KEY (question_id, user_id),
+    FOREIGN KEY (question_id) REFERENCES questions (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
+);
+CREATE TABLE answerVotes
+(
+    answer_id INT NOT NULL ,
+    user_id     INT NOT NULL ,
+    answerVote        boolean NOT NULL ,
+    PRIMARY KEY (answer_id, user_id),
+    FOREIGN KEY (answer_id) REFERENCES answers (id),
+    FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
 INSERT INTO users (name, password, registration)
