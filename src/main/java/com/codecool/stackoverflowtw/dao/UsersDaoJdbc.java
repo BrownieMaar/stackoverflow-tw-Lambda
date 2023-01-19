@@ -176,8 +176,8 @@ public class UsersDaoJdbc implements UsersDAO {
                                 resultSet.getTimestamp(3).toLocalDateTime(),
                                 resultSet.getInt(4),
                                 userId,
-                                resultSet.getInt(6),
-                                resultSet.getInt(7)
+                                getUpvoteCount(resultSet.getInt(1)),
+                                getDownVoteCount(resultSet.getInt(1))
                         ));
             }
             return userAnswers;
