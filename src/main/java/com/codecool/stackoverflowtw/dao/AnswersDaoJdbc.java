@@ -57,20 +57,45 @@ public class AnswersDaoJdbc implements AnswersDAO {
         return answers;
     }
 
+    private Answer getAnswerById(int id) {
+        String template = "SELECT * FROM answers WHERE id = ?";
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Answer(
+                        resultSet.getInt("id"),
+                        resultSet.getString("answer"),
+                        resultSet.getTimestamp("created").toLocalDateTime(),
+                        resultSet.getInt("question_id"),
+                        resultSet.getInt("user_id")
+                );
+            }
+        } catch (SQLException e) {
+            System.out.println("Answer not found. Error message:");
+            System.out.println(e.getErrorCode());
+        }
+        return null;
+    }
+
     @Override
-    public boolean createAnswer(NewAnswer newAnswer) {
-        String template = "INSERT INTO answers (answer, created, question_id, user_id) VALUES (?, localtimestamp, ?, ?)";
+    public Answer createAnswer(NewAnswer newAnswer) {
+        String template = "INSERT INTO answers (answer, created, question_id, user_id) VALUES (?, localtimestamp, ?, ?) RETURNING id";
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
             statement.setString(1, newAnswer.getAnswer());
             statement.setInt(2, newAnswer.getQuestion_id());
             statement.setInt(3, newAnswer.getUser_id());
-            statement.executeUpdate();
-            return true;
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return getAnswerById(resultSet.getInt("id"));
+            }
         } catch (SQLException e) {
+            System.out.println("Failed to insert answer. Error message:");
             System.out.println(e.getSQLState());
-            return false;
         }
+        return null;
     }
 
     @Override

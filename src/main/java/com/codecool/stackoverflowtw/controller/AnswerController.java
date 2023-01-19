@@ -1,5 +1,6 @@
 package com.codecool.stackoverflowtw.controller;
 
+import com.codecool.stackoverflowtw.controller.dto.AnswerDTO;
 import com.codecool.stackoverflowtw.controller.dto.NewAnswerDTO;
 import com.codecool.stackoverflowtw.service.AnswerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class AnswerController {
     }
 
     @PostMapping("/")
-    public boolean addNewAnswer(@RequestBody NewAnswerDTO newAnswerDTO) {
+    public AnswerDTO addNewAnswer(@RequestBody NewAnswerDTO newAnswerDTO) {
         return answerService.addNewAnswer(newAnswerDTO);
     }
 
