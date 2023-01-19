@@ -86,4 +86,18 @@ public class AnswersDaoJdbc implements AnswersDAO {
             return false;
         }
     }
+
+    @Override
+    public boolean deleteAnswersByUserId(int user_id) {
+        String template = "DELETE FROM answers WHERE user_id = ?";
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            statement.setInt(1, user_id);
+            statement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.getSQLState());
+            return false;
+        }
+    }
 }

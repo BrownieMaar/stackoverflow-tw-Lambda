@@ -45,10 +45,14 @@ public class UserService {
     }
 
     public boolean deleteUserById(int id) {
-        return usersDAO.deleteUser(id);
+        if (answersDAO.deleteAnswersByUserId(id)) {
+            return usersDAO.deleteUser(id);
+        }
+        System.out.println("Couldn't delete answers of user no. " + id);
+        return false;
     }
 
-    public int addNewUser (NewUserDTO user) {
+    public int addNewUser(NewUserDTO user) {
         return usersDAO.createUser(new NewUser(user.name(), user.password()));
     }
 
