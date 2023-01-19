@@ -40,4 +40,10 @@ public class UserController {
     public boolean deleteUserById(@PathVariable int id) {
         return userService.deleteUserById(id);
     }
+
+    @GetMapping("/{id}/questions")
+    public List<QuestionCardDTO> getQuestionsByUser(@PathVariable int id) { return userService.getQuestionsByUser(id);}
+
+    @GetMapping("/{id}/answers")
+    public List<AnswerDTO> getAnswersByUser(@PathVariable int id) { return userService.getAnswersByUser(id);}
 }

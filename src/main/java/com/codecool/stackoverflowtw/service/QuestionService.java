@@ -20,9 +20,9 @@ import java.util.stream.Collectors;
 @Service
 public class QuestionService {
 
-    private QuestionsDAO questionsDAO;
-    private UsersDAO usersDAO;
-    private AnswersDAO answersDAO;
+    private final QuestionsDAO questionsDAO;
+    private final UsersDAO usersDAO;
+    private final AnswersDAO answersDAO;
 
     @Autowired
     public QuestionService(QuestionsDAO questionsDAO, UsersDAO usersDAO, AnswersDAO answersDAO) {

@@ -1,21 +1,25 @@
 package com.codecool.stackoverflowtw.service;
 
 import com.codecool.stackoverflowtw.controller.dto.*;
+import com.codecool.stackoverflowtw.dao.AnswersDAO;
 import com.codecool.stackoverflowtw.dao.UsersDAO;
 import com.codecool.stackoverflowtw.dao.model.NewUser;
 import com.codecool.stackoverflowtw.dao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
 public class UserService {
 
     private final UsersDAO usersDAO;
+    private final AnswersDAO answersDAO;
 
     @Autowired
-    public UserService(UsersDAO usersDAO) {
+    public UserService(UsersDAO usersDAO, AnswersDAO answersDAO) {
         this.usersDAO = usersDAO;
+        this.answersDAO = answersDAO;
     }
 
     public List<UserCardDTO> getAllUsers() {
@@ -46,5 +50,13 @@ public class UserService {
 
     public int addNewUser (NewUserDTO user) {
         return usersDAO.createUser(new NewUser(user.name(), user.password()));
+    }
+
+    public List<QuestionCardDTO> getQuestionsByUser(int id) {
+        return usersDAO.getQuestionsByUser(id).stream().map(q -> new QuestionCardDTO(q.getId(), q.getTitle(), q.getCreated(), usersDAO.getUserFromUserId(q.getUser_id()), answersDAO.getAnswerCountByQuestionId(q.getId()))).toList();
+    }
+
+    public List<AnswerDTO> getAnswersByUser(int id) {
+        return usersDAO.getAnswersByUser(id).stream().map(a -> new AnswerDTO(a.getId(), a.getAnswer(), usersDAO.getUserFromUserId(id), a.getCreated())).toList();
     }
 }
