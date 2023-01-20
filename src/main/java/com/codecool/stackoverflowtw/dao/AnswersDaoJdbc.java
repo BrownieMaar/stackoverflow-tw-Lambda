@@ -51,7 +51,9 @@ public class AnswersDaoJdbc implements AnswersDAO {
                         resultSet.getInt("question_id"),
                         resultSet.getInt("user_id"),
                         getUpvoteCount(resultSet.getInt(1)),
-                        getDownVoteCount(resultSet.getInt(1))
+                        getUpvoteUserIds(resultSet.getInt(1)),
+                        getDownVoteCount(resultSet.getInt(1)),
+                        getDownVoteUserIds(resultSet.getInt(1))
 
                 ));
             }
@@ -61,7 +63,7 @@ public class AnswersDaoJdbc implements AnswersDAO {
         return answers;
     }
 
-    private Answer getAnswerById(int id) {
+    public Answer getAnswerById(int id) {
         String template = "SELECT * FROM answers WHERE id = ?";
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
@@ -75,7 +77,9 @@ public class AnswersDaoJdbc implements AnswersDAO {
                         resultSet.getInt("question_id"),
                         resultSet.getInt("user_id"),
                         getUpvoteCount(id),
-                        getDownVoteCount(id)
+                        getUpvoteUserIds(id),
+                        getDownVoteCount(id),
+                        getDownVoteUserIds(id)
                 );
             }
         } catch (SQLException e) {
@@ -171,6 +175,25 @@ public class AnswersDaoJdbc implements AnswersDAO {
         }
         return 0;
     }
+    private int[] getUpvoteUserIds(int id) {
+        String template =
+                "SELECT user_id " +
+                        "FROM answervotes WHERE answer_id = ? AND answervote = true";
+        List<Integer> upvotersId = new ArrayList<>();
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                upvotersId.add(resultSet.getInt("user_id"));
+            }
+            return upvotersId.stream().mapToInt(Integer::intValue).toArray();
+        } catch (SQLException e) {
+            System.out.println("Couldnt get upvoter ids");
+            System.out.println(e.getMessage());
+        }
+        return null;
+    }
 
     private int getDownVoteCount(int id) {
         String template =
@@ -190,5 +213,24 @@ public class AnswersDaoJdbc implements AnswersDAO {
             throw new RuntimeException(e);
         }
         return 0;
+    }
+    private int[] getDownVoteUserIds(int id) {
+        String template =
+                "SELECT user_id " +
+                        "FROM answervotes WHERE answer_id = ? AND answervote = false";
+        List<Integer> downvotersId = new ArrayList<>();
+        try (Connection connection = database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(template)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                downvotersId.add(resultSet.getInt("user_id"));
+            }
+            return downvotersId.stream().mapToInt(Integer::intValue).toArray();
+        } catch (SQLException e) {
+            System.out.println("Couldnt get downvoter ids");
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

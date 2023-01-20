@@ -32,7 +32,7 @@ public class AnswerService {
     public AnswerDTO addNewAnswer(NewAnswerDTO newAnswerDTO) {
         Answer answer = answersDAO.createAnswer(new NewAnswer(newAnswerDTO.answer(), newAnswerDTO.question_id(), newAnswerDTO.user_id()));
         return new AnswerDTO(answer.getId(), answer.getAnswer(), usersDAO.getUserFromUserId(answer.getUser_id()),
-                answer.getCreated(), answer.getQuestion_id(), answer.getUpVoteCount(), answer.getDownVoteCount());
+                answer.getCreated(), answer.getQuestion_id(), answer.getUpVoteCount(), answer.getUpVoteIds(), answer.getDownVoteCount(), answer.getDownVoteIds());
     }
 
     public boolean voteToAnswer(AnswerVoteDTO answerVoteDTO) {

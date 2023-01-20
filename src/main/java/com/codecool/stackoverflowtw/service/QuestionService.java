@@ -37,7 +37,8 @@ public class QuestionService {
         List<AnswerDTO> answerDTOList = createAnswerDTOList(answersDAO.getAnswersByQuestionId(id));
 
         return new QuestionPageDTO(question.getId(), question.getTitle(), question.getDescription(),
-                question.getCreated(), user, answerDTOList, question.getUpVoteCount(), question.getDownVoteCount());
+                question.getCreated(), user, answerDTOList, question.getUpVoteCount(),
+                question.getUpVoteIds(), question.getDownVoteCount(), question.getDownVoteIds());
     }
 
     public boolean deleteQuestionById(int id) {
@@ -52,8 +53,8 @@ public class QuestionService {
     private List<AnswerDTO> createAnswerDTOList(List<Answer> answerList) {
         return answerList.stream().map(answer -> new AnswerDTO(answer.getId(), answer.getAnswer(),
                         usersDAO.getUserFromUserId(answer.getUser_id()), answer.getCreated(),
-                        answer.getQuestion_id(), answer.getUpVoteCount()
-                        , answer.getDownVoteCount()))
+                        answer.getQuestion_id(), answer.getUpVoteCount(), answer.getUpVoteIds()
+                        , answer.getDownVoteCount(), answer.getDownVoteIds()))
                 .collect(Collectors.toList());
 
     }

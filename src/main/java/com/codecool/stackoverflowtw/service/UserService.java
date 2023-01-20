@@ -2,12 +2,14 @@ package com.codecool.stackoverflowtw.service;
 
 import com.codecool.stackoverflowtw.controller.dto.*;
 import com.codecool.stackoverflowtw.dao.AnswersDAO;
+import com.codecool.stackoverflowtw.dao.QuestionsDAO;
 import com.codecool.stackoverflowtw.dao.UsersDAO;
 import com.codecool.stackoverflowtw.dao.model.NewUser;
 import com.codecool.stackoverflowtw.dao.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -15,11 +17,13 @@ public class UserService {
 
     private final UsersDAO usersDAO;
     private final AnswersDAO answersDAO;
+    private final QuestionsDAO questionsDAO;
 
     @Autowired
-    public UserService(UsersDAO usersDAO, AnswersDAO answersDAO) {
+    public UserService(UsersDAO usersDAO, AnswersDAO answersDAO, QuestionsDAO questionsDAO) {
         this.usersDAO = usersDAO;
         this.answersDAO = answersDAO;
+        this.questionsDAO = questionsDAO;
     }
 
     public List<UserCardDTO> getAllUsers() {
@@ -57,13 +61,17 @@ public class UserService {
     }
 
     public List<QuestionCardDTO> getQuestionsByUser(int id) {
-        return usersDAO.getQuestionsByUser(id).stream().map(q -> new QuestionCardDTO(q.getId(), q.getTitle(),
+        return Arrays.stream(usersDAO.getQuestionIdsByUser(id))
+                .mapToObj(questionsDAO::getQuestionById)
+                .map(q -> new QuestionCardDTO(q.getId(), q.getTitle(),
                 q.getCreated(), usersDAO.getUserFromUserId(q.getUser_id()),
                 answersDAO.getAnswerCountByQuestionId(q.getId()), q.getUpVoteCount(), q.getDownVoteCount())).toList();
     }
 
     public List<AnswerDTO> getAnswersByUser(int id) {
-        return usersDAO.getAnswersByUser(id).stream().map(a -> new AnswerDTO(a.getId(), a.getAnswer(),
-                usersDAO.getUserFromUserId(id), a.getCreated(), a.getQuestion_id(), a.getUpVoteCount(), a.getDownVoteCount())).toList();
+        return Arrays.stream(usersDAO.getAnswersIdsByUser(id))
+                .mapToObj(answersDAO::getAnswerById)
+                .map(a -> new AnswerDTO(a.getId(), a.getAnswer(),
+                usersDAO.getUserFromUserId(id), a.getCreated(), a.getQuestion_id(), a.getUpVoteCount(), a.getUpVoteIds(), a.getDownVoteCount(), a.getDownVoteIds())).toList();
     }
 }

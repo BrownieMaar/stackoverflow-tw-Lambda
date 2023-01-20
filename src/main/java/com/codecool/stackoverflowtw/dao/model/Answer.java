@@ -9,16 +9,28 @@ public class Answer {
     int question_id;
     int user_id;
     int upVoteCount;
+    int[] upVoteIds;
     int downVoteCount;
+    int[] downVoteIds;
 
-    public Answer(int id, String answer, LocalDateTime created, int question_id, int user_id, int upVoteCount, int downVoteCount) {
+    public Answer(int id, String answer, LocalDateTime created, int question_id, int user_id, int upVoteCount, int[] upVoteIds, int downVoteCount, int[] downVoteIds) {
         this.id = id;
         this.answer = answer;
         this.created = created;
         this.question_id = question_id;
         this.user_id = user_id;
         this.upVoteCount = upVoteCount;
+        this.upVoteIds = upVoteIds;
         this.downVoteCount = downVoteCount;
+        this.downVoteIds = downVoteIds;
+    }
+
+    public int[] getUpVoteIds() {
+        return upVoteIds;
+    }
+
+    public int[] getDownVoteIds() {
+        return downVoteIds;
     }
 
     public int getUpVoteCount() {

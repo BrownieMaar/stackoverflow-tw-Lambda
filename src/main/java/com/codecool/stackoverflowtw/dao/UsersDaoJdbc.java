@@ -161,57 +161,38 @@ public class UsersDaoJdbc implements UsersDAO {
     }
 
     @Override
-    public List<Answer> getAnswersByUser(int userId) {
-        List<Answer> userAnswers = new ArrayList<>();
-        String template = "SELECT * FROM answers WHERE user_id = ?";
+    public int[] getAnswersIdsByUser(int userId) {
+        List<Integer> userAnswers = new ArrayList<>();
+        String template = "SELECT id FROM answers WHERE user_id = ?";
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                userAnswers.add(
-                        new Answer(
-                                resultSet.getInt(1),
-                                resultSet.getString(2),
-                                resultSet.getTimestamp(3).toLocalDateTime(),
-                                resultSet.getInt(4),
-                                userId,
-                                getUpvoteCount(resultSet.getInt(1)),
-                                getDownVoteCount(resultSet.getInt(1))
-                        ));
+                userAnswers.add(resultSet.getInt("id"));
             }
-            return userAnswers;
+            return userAnswers.stream().mapToInt(Integer::intValue).toArray();
         } catch (SQLException e) {
-            System.out.println("There was a problem with getting the answers of user: " + userId + "\n");
+            System.out.println("There was a problem with getting the answerids of user: " + userId + "\n");
             System.out.println(e.getMessage());
             return null;
         }
     }
 
     @Override
-    public List<Question> getQuestionsByUser(int userId) {
-        List<Question> userQuestions = new ArrayList<>();
-        String template = "SELECT * FROM questions WHERE user_id = ?";
+    public int[] getQuestionIdsByUser(int userId) {
+        List<Integer> userQuestions = new ArrayList<>();
+        String template = "SELECT id FROM questions WHERE user_id = ?";
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
             statement.setInt(1, userId);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                userQuestions.add(
-                        new Question(
-                                resultSet.getInt(1),
-                                resultSet.getString(2),
-                                resultSet.getString(3),
-                                resultSet.getTimestamp(4).toLocalDateTime(),
-                                userId,
-                                getUpvoteCount(userId),
-                                getDownVoteCount(userId)
-                        )
-                );
+                userQuestions.add(resultSet.getInt("id"));
             }
-            return userQuestions;
+            return userQuestions.stream().mapToInt(Integer::intValue).toArray();
         } catch (SQLException e) {
-            System.out.println("There was a problem with getting the questions of user: " + userId + "\n");
+            System.out.println("There was a problem with getting the questions ids of user: " + userId + "\n");
             System.out.println(e.getMessage());
             return null;
         }
