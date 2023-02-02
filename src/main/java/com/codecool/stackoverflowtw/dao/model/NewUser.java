@@ -5,9 +5,12 @@ public class NewUser {
     String name;
     String password;
 
-    public NewUser(String name, String password) {
+    String colorHex;
+
+    public NewUser(String name, String password, String colorHex) {
         this.name = name;
         this.password = password;
+        this.colorHex = colorHex;
     }
 
     public String getName() {
@@ -16,5 +19,9 @@ public class NewUser {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getColorHex() {
+        return colorHex;
     }
 }

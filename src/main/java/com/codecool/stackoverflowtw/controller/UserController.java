@@ -27,8 +27,9 @@ public class UserController {
         return userService.getUserById(id);
     }
     @GetMapping("/auth")
-    public UserPageDTO getUserByNameAndPassword(@RequestParam String name, @RequestParam String password) {
-        return userService.getUserByNameAndPassword(new NewUserDTO(name, password));
+    public UserPageDTO getUserByNameAndPassword(@RequestParam String name, @RequestParam String password,
+                                                @RequestParam String colorHex) {
+        return userService.getUserByNameAndPassword(new NewUserDTO(name, password, colorHex));
     }
 
     @PostMapping("/")

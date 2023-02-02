@@ -27,7 +27,9 @@ public class UserService {
     }
 
     public List<UserCardDTO> getAllUsers() {
-        return usersDAO.getAllUsers().stream().map(u -> new UserCardDTO(u.getId(), u.getName(), u.getRegistrationDate(), usersDAO.countQuestionsByUser(u.getId()), usersDAO.countAnswersByUser(u.getId()))).toList();
+        return usersDAO.getAllUsers().stream().map(u -> new UserCardDTO(u.getId(), u.getName(),
+         u.getColorhex(), u.getRegistrationDate(), usersDAO.countQuestionsByUser(u.getId()),
+                usersDAO.countAnswersByUser(u.getId()))).toList();
     }
 
     public UserPageDTO getUserById(int id) {
@@ -35,17 +37,19 @@ public class UserService {
         int questionCount = usersDAO.countQuestionsByUser(id);
         int answerCount = usersDAO.countAnswersByUser(id);
 
-        return new UserPageDTO(id, user.getName(), user.getRegistrationDate(), user.isAdmin(), questionCount, answerCount);
+        return new UserPageDTO(id, user.getName(), user.getColorhex(), user.getRegistrationDate(), user.isAdmin(), questionCount,
+                answerCount);
     }
 
     public UserPageDTO getUserByNameAndPassword(NewUserDTO newUserDTO) {
-        User user = usersDAO.getUserByNameAndPassword(new NewUser(newUserDTO.name(), newUserDTO.password()));
+        User user = usersDAO.getUserByNameAndPassword(new NewUser(newUserDTO.name(), newUserDTO.password(), newUserDTO.colorHex()));
         if (user == null) {
             return null;
         }
         int questionCount = usersDAO.countQuestionsByUser(user.getId());
         int answerCount = usersDAO.countAnswersByUser(user.getId());
-        return new UserPageDTO(user.getId(), user.getName(), user.getRegistrationDate(), user.isAdmin(), questionCount, answerCount);
+        return new UserPageDTO(user.getId(), user.getName(), user.getColorhex(), user.getRegistrationDate(), user.isAdmin(),
+                questionCount, answerCount);
     }
 
     public boolean deleteUserById(int id) {
@@ -57,7 +61,7 @@ public class UserService {
     }
 
     public int addNewUser(NewUserDTO user) {
-        return usersDAO.createUser(new NewUser(user.name(), user.password()));
+        return usersDAO.createUser(new NewUser(user.name(), user.password(), user.colorHex()));
     }
 
     public List<QuestionCardDTO> getQuestionsByUser(int id) {

@@ -1,6 +1,8 @@
 package com.codecool.stackoverflowtw.dao;
 
-import com.codecool.stackoverflowtw.dao.model.*;
+import com.codecool.stackoverflowtw.dao.model.Database;
+import com.codecool.stackoverflowtw.dao.model.NewUser;
+import com.codecool.stackoverflowtw.dao.model.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,13 +20,15 @@ public class UsersDaoJdbc implements UsersDAO {
 
     @Override
     public List<User> getAllUsers() {
-        String template = "SELECT id, name, registration, is_admin FROM users";
+        String template = "SELECT id, name, colorhex, registration, is_admin FROM users";
         List<User> users = new ArrayList<>();
 
         try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(template)) {
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                users.add(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime(), resultSet.getBoolean("is_admin")));
+                users.add(new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString("colorhex"),
+                        resultSet.getTimestamp(
+                                "registration").toLocalDateTime(), resultSet.getBoolean("is_admin")));
             }
             return users;
         } catch (SQLException e) {
@@ -36,13 +40,16 @@ public class UsersDaoJdbc implements UsersDAO {
 
     @Override
     public User getUserFromUserId(int id) {
-        String template = "SELECT id, name, registration, is_admin FROM users WHERE id = ?";
+        String template = "SELECT id, name, colorhex, registration, is_admin FROM users WHERE id = ?";
 
         try (Connection connection = database.getConnection(); PreparedStatement statement = connection.prepareStatement(template)) {
             statement.setInt(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return new User(id, resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime(), resultSet.getBoolean("is_admin"));
+                return new User(id, resultSet.getString("name"),
+                        resultSet.getString("colorhex"), resultSet.getTimestamp("registration").toLocalDateTime(),
+                        resultSet.getBoolean(
+                                "is_admin"));
             } else {
                 System.out.println("No user with that id.");
                 return null;
@@ -56,7 +63,7 @@ public class UsersDaoJdbc implements UsersDAO {
 
     @Override
     public User getUserByNameAndPassword(NewUser newUser) {
-        String template = "SELECT id, name, registration, password, is_admin FROM users WHERE name = ?";
+        String template = "SELECT id, name, colorhex, registration, password, is_admin FROM users WHERE name = ?";
 
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
@@ -64,7 +71,8 @@ public class UsersDaoJdbc implements UsersDAO {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 if (resultSet.getString("password").equals(newUser.getPassword())) {
-                    return new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getTimestamp("registration").toLocalDateTime(), resultSet.getBoolean("is_admin"));
+                    return new User(resultSet.getInt("id"), resultSet.getString("name"), resultSet.getString(
+                            "colorhex"), resultSet.getTimestamp("registration").toLocalDateTime(), resultSet.getBoolean("is_admin"));
                 }
                 System.out.println("Password does not match.");
             } else {
@@ -122,13 +130,14 @@ public class UsersDaoJdbc implements UsersDAO {
 
     @Override
     public int createUser(NewUser user) {
-        String template = "INSERT INTO users (name, password, registration) " +
-                "VALUES (?, ?, localtimestamp(2)) RETURNING id";
+        String template = "INSERT INTO users (name, password, colorhex, registration) " +
+                "VALUES (?, ?, ?, localtimestamp(2)) RETURNING id";
 
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getPassword());
+            statement.setString(3, user.getColorHex());
             ResultSet result = statement.executeQuery();
             if (result.next()) {
                 return result.getInt(1);
