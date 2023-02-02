@@ -61,7 +61,6 @@ public class QuestionService {
 
     public boolean voteToQuestion(QuestionVoteDTO questionVoteDTO) {
 
-        return questionsDAO.vote(new QuestionVote(questionVoteDTO.vote(), questionVoteDTO.questionId(),
-                questionVoteDTO.userId()));
+        return questionsDAO.vote(new QuestionVote(questionVoteDTO.questionId(), questionVoteDTO.userId(), questionVoteDTO.vote()));
     }
 }

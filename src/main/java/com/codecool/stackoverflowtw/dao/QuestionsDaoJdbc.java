@@ -93,8 +93,8 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
         try (Connection connection = database.getConnection();
              PreparedStatement statement = connection.prepareStatement(template)) {
 
-            statement.setInt(1, questionVote.getUser_id());
-            statement.setInt(2, questionVote.getQuestion_id());
+            statement.setInt(1, questionVote.getQuestion_id());
+            statement.setInt(2, questionVote.getUser_id());
             statement.setBoolean(3, questionVote.isVote());
             statement.executeUpdate();
             return true;
@@ -113,7 +113,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return false;
         }
         //Delete the question:
@@ -123,7 +123,7 @@ public class QuestionsDaoJdbc implements QuestionsDAO {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            System.out.println(e);
+            System.out.println(e.getMessage());
             return false;
         }
         return true;

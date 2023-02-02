@@ -31,7 +31,9 @@ public class QuestionController {
     }
 
     @PutMapping("/vote")
-    public boolean voteToQuestion(@RequestBody QuestionVoteDTO questionVoteDTO){return  questionService.voteToQuestion(questionVoteDTO); }
+    public boolean voteToQuestion(@RequestBody QuestionVoteDTO questionVoteDTO) {
+        return  questionService.voteToQuestion(questionVoteDTO);
+    }
 
     @PostMapping("/")
     public int addNewQuestion(@RequestBody NewQuestionDTO question) {

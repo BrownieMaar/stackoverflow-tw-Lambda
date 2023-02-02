@@ -27,10 +27,8 @@ public class AnswerController {
         return answerService.deleteAnswerById(id);
     }
 
-    @PutMapping
-    private boolean voteToAnswer(@RequestBody AnswerVoteDTO answerVoteDTO) {
+    @PutMapping("/vote")
+    public boolean voteToAnswer(@RequestBody AnswerVoteDTO answerVoteDTO) {
         return answerService.voteToAnswer(answerVoteDTO);
     }
-
-    ;
 }

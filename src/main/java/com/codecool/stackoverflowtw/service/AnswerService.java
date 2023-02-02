@@ -37,8 +37,8 @@ public class AnswerService {
 
     public boolean voteToAnswer(AnswerVoteDTO answerVoteDTO) {
 
-        return answersDAO.vote(new AnswerVote(answerVoteDTO.vote(), answerVoteDTO.answerId(),
-                answerVoteDTO.userId()));
+        return answersDAO.vote(new AnswerVote(answerVoteDTO.vote(),
+                answerVoteDTO.userId(), answerVoteDTO.answerId()));
     }
 
 }
