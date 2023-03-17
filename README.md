@@ -3,7 +3,7 @@
 
 ### The Lambda Males
 * Márton BARNA ([@BrownieMaar](https://github.com/BrownieMaar))
-* FAROUQ Siyar ([@siyar25](https://github.com/siyar25))
+* Siyar FAROUQ ([@siyar25](https://github.com/siyar25))
 * Dénes FÜLÖP ([@fulopdenes](https://github.com/fulopdenes))
 * Zoltán MIHÁLYFI ([@miz092](https://github.com/miz092))
 
