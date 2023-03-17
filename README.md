@@ -1,32 +1,28 @@
-# Stackoverflow TW Project
+# Stackoverflow++
+### A School project by the not-that-well-known _Lambda Males_.
 
-- Main page listing all questions with details, date and answer count
-- Feature to sort questions on Main page by alphabet, date or answer count
-- Detail page of a question shows who asked it and lists all answers with date and users
-- Feature to add new question (redirects to question detail page after save)
-- Feature to add new answer (location: question detail page)
-- Feature to delete question (later extend so only the owner can delete it)
-- Feature to delete answer (location: question delete page) (later extend so only the owner can delete it)
-- Feature to Register new user
-- Feature to Login with user and store session (who is currently logged in is always visible on frontend)
-- Feature to Logout user
-- Users list page: shows username, registration date, number of questions, number of answers
-- Feature to mark the accepted answer for the user's own question
-- Write tests for the service layer
+### The Lambda Males
+* Márton BARNA ([@BrownieMaar](https://github.com/BrownieMaar))
+* FAROUQ Siyar ([@siyar25](https://github.com/siyar25))
+* Dénes FÜLÖP ([@fulopdenes](https://github.com/fulopdenes))
+* Zoltán MIHÁLYFI ([@miz092](https://github.com/miz092))
 
-#### Extra:
-- OPTIONAL: Admin user type can delete any question or answer
-- OPTIONAL: Filter by question titles  (location: main page)
-- OPTIONAL: Feature to tag questions
-- OPTIONAL: Feature to edit questions (limited to the ones created by the user)
-- OPTIONAL: Feature to edit answers (limited to the ones created by the user)
-- OPTIONAL: Feature to calculate reputation of the user and display them differently if they are very active on the site (display reputation on user list page too)
+## About the Project
 
-## General requirements: 
-- Create an SQL database to store your data
-- Stick to Model View Controller layers (Frontend doesn't do calculations, only displays the data, SQL handles the data manipulation)
-- Do the base data features first and add user management later, extend already existing ones if necessary 
-- Aim for the code to keep SOLID, OOP and Clean code principles
-- Focus on the Java & SQL parts and do minimal frontend as it is not the goal of this project
-- Vanilla Javascript and HTML is suggested for frontend, nothing more complicated (like frameworks) is necessary 
-- If you need new API endpoints ask mentors to create them for you
+This was our last team project in [Codecool](https://codecool.com/)'s 10-month Full Stack developer course's OOP module. It was the first time we used Java with Spring Boot in a Full Stack application.
+
+**This repository is only the backend of the project!** You can find the frontend repository [here](https://github.com/BrownieMaar/stackoverflow-frontend).
+
+_This README is only about the backend part of the project. For the frontend documentation, refer to the frontend repository's README._
+
+### Used Technologies
+
+* Java 17
+* Spring Boot
+* PostgreSQL
+
+## Getting Started
+
+You'll need the Maven build tool and Java 17 to build the application. For the database a new PostgreSQL database will be needed called `stackoverflow`. Username and password for the database need to be passed to the application as _environment variables_. To initialize the database with placeholder data, run the `init.sql` file in the `resources` folder.
+
+Now the application ca be started. Spring Boot will launch the server, and the endpoints will be live.
